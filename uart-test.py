@@ -48,8 +48,5 @@ while True:
         # this timing is chosen by trial, if less, reading errors occur (in the last portion of the read buffer)
         # utime.sleep_ms(20)
         s = uart1.read_buf()
-        if s[98:] == b'==':
-            print('RECIEVED SEQUENCE: \n', s.decode('utf-8'))
-        else:
-            print('READ ERROR TRY AGAIN')
+        print('RECIEVED SEQUENCE: \n', s.decode('utf-8'))
         uart1.flush()
