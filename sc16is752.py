@@ -65,6 +65,8 @@ class SC16IS752():
     ## -------------------- private functions -----------------------
 
     def _readRegister(self, regAddress):
+        # note that << 3 shift, it is not documented but it gets the REAL address of a register
+        # from the address listed in the manual, the same is for the channels
         result = self._i2c.readfrom_mem(self._deviceAddress, regAddress << 3 | self._channel << 1, 1)
         #print('READ REGISTER', regAddress, 'RESULT: ', result)
         return result
@@ -128,7 +130,8 @@ class SC16IS752():
     def read_buf(self, buf_size=100):
         buf = bytearray(buf_size)
         # this timing is chosen by trial, if less, reading errors occur in the last portion of the read buffer
-        # it's only needed when reading is triggered by polling available(), not for interrupts
+        # it's only needed when reading is triggered by polling available()
+        # it should be commented out for interrupts 
         # utime.sleep_ms(20)
         self._i2c.readfrom_mem_into(self._deviceAddress, SC16IS752_RHR << 3 | self._channel << 1, buf)
         return buf
